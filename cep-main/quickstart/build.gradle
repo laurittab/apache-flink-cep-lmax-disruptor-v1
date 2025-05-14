@@ -7,7 +7,7 @@ plugins {
 
 ext {
     javaVersion = '11.0.27'
-    flinkVersion = '2.0.0'
+    flinkVersion = '1.20.1'
     scalaBinaryVersion = '2.12'
     slf4jVersion = '1.7.36'
     log4jVersion = '2.17.1'
@@ -64,11 +64,17 @@ dependencies {
     // shadow jar and are provided in the lib folder of Flink
     // --------------------------------------------------------------
     if (flinkVersionNew) {
+        implementation "org.apache.flink:flink-java:${flinkVersion}"
         implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
         implementation "org.apache.flink:flink-clients:${flinkVersion}"
+        implementation project(':disruptor-subproject') 
+        implementation 'com.lmax:disruptor:4.0.0'
     } else {
+        implementation "org.apache.flink:flink-java_${scalaBinaryVersion}:${flinkVersion}"
         implementation "org.apache.flink:flink-streaming-java_${scalaBinaryVersion}:${flinkVersion}"
-        implementation "org.apache.flink:flink-clients_${scalaBinaryVersion}:${flinkVersion}"
+        implementation "org.apache.flink:flink-clients_${scalaBinaryVersion}:${flinkVersion}"        
+        implementation project(':disruptor-subproject') 
+        implementation 'com.lmax:disruptor:4.0.0'
     }
 
     // --------------------------------------------------------------
@@ -107,4 +113,10 @@ jar {
 
 shadowJar {
     configurations = [project.configurations.flinkShadowJar]
+}
+
+task printMessage {
+    doLast {
+        println 'Building main project: cep-main'
+    }
 }

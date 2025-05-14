@@ -8,19 +8,28 @@ configurations {
 
 sourceSets {
     perftest {
-        compileClasspath += sourceSets.main.output + sourceSets.test.output
-        runtimeClasspath += sourceSets.main.output + sourceSets.test.output
+        compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.perftestCompileOnlyResolved + configurations.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.test.output + sourceSets.test.output + configurations.runtimeClasspath
     }
 }
 
 dependencies {
     perftestCompileOnly 'org.hdrhistogram:HdrHistogram:2.1.12'
+    
+    // Add Disruptor dependency
+    perftestCompileOnly 'com.lmax:disruptor:4.0.0' // Disruptor dependency
+
+    perftestCompileOnly 'org.apache.flink:flink-java:1.20.1'
+    perftestCompileOnly 'org.apache.flink:flink-core:1.20.1'
+    perftestCompileOnly 'org.apache.flink:flink-streaming-java:1.20.1'
+    perftestCompileOnly 'org.apache.flink:flink-clients:1.20.1'
 }
 
 build.dependsOn perftestClasses
 
 task perfJar(type: Jar, group: 'build') {
     archiveAppendix.set('perf')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from sourceSets.perftest.output
     from sourceSets.test.output
     from { configurations.perftestCompileOnlyResolved.collect { it.isDirectory() ? it : zipTree(it) } }
