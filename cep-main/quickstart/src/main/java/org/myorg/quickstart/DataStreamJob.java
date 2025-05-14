@@ -1,8 +1,8 @@
 package org.myorg.quickstart;
 
 import com.lmax.disruptor.*;
-import com.lmax.disruptor.support.ValueEvent;
-import com.lmax.disruptor.support.ValueAdditionEventHandler;
+import perftest.java.com.lmax.disruptor.support.ValueEvent;
+import perftest.java.com.lmax.disruptor.support.ValueAdditionEventHandler;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
@@ -16,7 +16,7 @@ public class DataStreamJob {
     private static final int BUFFER_SIZE = 1024 * 64;
     private static final long ITERATIONS = 1000L * 1000L * 100L;
 
-    private final RingBuffer<ValueEvent> ringBuffer =
+    private final static RingBuffer<ValueEvent> ringBuffer =
         RingBuffer.createSingleProducer(ValueEvent.EVENT_FACTORY, BUFFER_SIZE, new YieldingWaitStrategy());
     private final SequenceBarrier sequenceBarrier = ringBuffer.newBarrier();
     private final ValueAdditionEventHandler handler = new ValueAdditionEventHandler();

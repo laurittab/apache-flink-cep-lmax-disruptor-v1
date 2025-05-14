@@ -30,7 +30,6 @@ apply from: 'gradle/jmh.gradle'
 apply from: 'gradle/asciidoc.gradle'
 apply from: 'gradle/jcstress.gradle'
 
-wrapper.gradleVersion = '7.6'
 
 repositories {
     mavenCentral()
@@ -42,15 +41,10 @@ dependencies {
     checkstyle 'com.puppycrawl.tools:checkstyle:10.4'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     testImplementation 'org.hamcrest:hamcrest:2.2'
+    implementation 'org.apache.flink:flink-streaming-java:1.20.1'
 }
 
 compileJava {
-    options.fork = true
-    options.debug = true
-    options.warnings = true
-    options.deprecation = true
-}
-compileTestJava {
     options.fork = true
     options.debug = true
     options.warnings = true
@@ -114,5 +108,16 @@ sourceSets {
     examples {
         compileClasspath += sourceSets.main.output
         runtimeClasspath += sourceSets.main.output
+    }
+    main {
+        java {
+            srcDirs = ['src/main/java', 'src/perftest/java', 'src/test/java']
+        }
+    }
+}
+
+task printMessage {
+    doLast {
+        println 'Building main project: cep-main'
     }
 }
