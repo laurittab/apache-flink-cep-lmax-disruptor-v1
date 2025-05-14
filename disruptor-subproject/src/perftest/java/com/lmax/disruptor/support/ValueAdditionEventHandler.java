@@ -26,6 +26,7 @@ public final class ValueAdditionEventHandler implements EventHandler<ValueEvent>
     private final PaddedLong batchesProcessed = new PaddedLong();
     private long count;
     private CountDownLatch latch;
+    private long currentSequence;
 
     public long getValue()
     {
@@ -48,6 +49,7 @@ public final class ValueAdditionEventHandler implements EventHandler<ValueEvent>
     @Override
     public void onEvent(final ValueEvent event, final long sequence, final boolean endOfBatch) throws Exception
     {
+        currentSequence = sequence;
         value.set(value.get() + event.getValue());
 
         if (count == sequence)
@@ -61,4 +63,9 @@ public final class ValueAdditionEventHandler implements EventHandler<ValueEvent>
     {
         batchesProcessed.increment();
     }
+
+    public long getCurrentSequence()
+    {
+    return currentSequence;
+}
 }

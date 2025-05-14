@@ -64,11 +64,17 @@ dependencies {
     // shadow jar and are provided in the lib folder of Flink
     // --------------------------------------------------------------
     if (flinkVersionNew) {
+        implementation "org.apache.flink:flink-java:${flinkVersion}"
         implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
         implementation "org.apache.flink:flink-clients:${flinkVersion}"
+        implementation project(':disruptor-subproject') 
+        implementation 'com.lmax:disruptor:4.0.0'
     } else {
+        implementation "org.apache.flink:flink-java_${scalaBinaryVersion}:${flinkVersion}"
         implementation "org.apache.flink:flink-streaming-java_${scalaBinaryVersion}:${flinkVersion}"
-        implementation "org.apache.flink:flink-clients_${scalaBinaryVersion}:${flinkVersion}"
+        implementation "org.apache.flink:flink-clients_${scalaBinaryVersion}:${flinkVersion}"        
+        implementation project(':disruptor-subproject') 
+        implementation 'com.lmax:disruptor:4.0.0'
     }
 
     // --------------------------------------------------------------
