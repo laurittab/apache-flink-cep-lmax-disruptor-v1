@@ -1,2 +1,0 @@
-rootProject.name = 'apache-flink-cep-lmax-disruptor-v1'
-include 'cep-main', 'disruptor-subproject'
