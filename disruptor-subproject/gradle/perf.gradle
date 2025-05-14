@@ -29,6 +29,7 @@ build.dependsOn perftestClasses
 
 task perfJar(type: Jar, group: 'build') {
     archiveAppendix.set('perf')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from sourceSets.perftest.output
     from sourceSets.test.output
     from { configurations.perftestCompileOnlyResolved.collect { it.isDirectory() ? it : zipTree(it) } }
